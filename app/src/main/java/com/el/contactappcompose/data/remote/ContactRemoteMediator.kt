@@ -18,8 +18,11 @@ class ContactRemoteMediator(
     private val contactApi: ContactsApi
 ) : RemoteMediator<Int, ContactEntity>() {
 
-    private val totalPageWantToFetch = 2
-    private var lastLoadedPage = 1
+    private val totalPageWantToFetch = 100
+
+
+    private var currentPage = 1
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, ContactEntity>
@@ -29,19 +32,20 @@ class ContactRemoteMediator(
             //finding next page
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1
-                LoadType.PREPEND -> return MediatorResult.Success(true)
+                LoadType.PREPEND -> return MediatorResult.Success(
+                    true
+                )
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
-                    if (lastItem == null) 1
-                    else {
-                        if (lastLoadedPage < totalPageWantToFetch) {
-                            lastLoadedPage += 1
-                            lastLoadedPage
-                        } else
-                            return MediatorResult.Success(true)
+                    if(lastItem == null) {
+                        1
+                    } else {
+                        currentPage
                     }
                 }
             }
+
+            currentPage += 1
 
             val contactsList = contactApi.getRandomLists(
                 page = loadKey,
@@ -50,7 +54,6 @@ class ContactRemoteMediator(
 
             contactDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    //like swipe down refresh.
                     contactDb.dao.clearAll()
                 }
                 val contactEntities = contactsList.results.map { it.toContactEntity() }
@@ -66,4 +69,7 @@ class ContactRemoteMediator(
         }
     }
 
+    override suspend fun initialize(): InitializeAction {
+        return super.initialize()
+    }
 }

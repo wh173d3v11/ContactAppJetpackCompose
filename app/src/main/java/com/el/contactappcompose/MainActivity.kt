@@ -1,36 +1,42 @@
 package com.el.contactappcompose
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.el.contactappcompose.presentation.ContactsViewModel
 import com.el.contactappcompose.ui.contactscreen.ContactScreen
 import com.el.contactappcompose.ui.theme.ContactAppComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ContactAppComposeTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
+                Scaffold(
+                    topBar = {
+                        TopAppBar(title = {
+                            Text(text = "Contacts")
+                        })
+                    },
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val viewModel: ContactsViewModel = hiltViewModel<ContactsViewModel>()
-                    val contacts = viewModel.contactPagingFlow.collectAsLazyPagingItems()
-                    ContactScreen(contacts = contacts)
+//                    color = MaterialTheme.colorScheme.background
+                ) { contentPadding ->
+                    ContactScreen(Modifier.padding(top = contentPadding.calculateTopPadding()))
                 }
             }
         }

@@ -57,12 +57,16 @@ object AppModule {
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
-    fun proviveContactPager(
+    fun provideContactPager(
         contactDatabase: ContactDatabase,
         contactsApi: ContactsApi
     ): Pager<Int, ContactEntity> {
         return Pager(
-            config = PagingConfig(pageSize = 25),
+            config = PagingConfig(
+                pageSize = 25,
+                initialLoadSize = 25,
+                enablePlaceholders = false
+            ),
             remoteMediator = ContactRemoteMediator(
                 contactDb = contactDatabase,
                 contactApi = contactsApi
