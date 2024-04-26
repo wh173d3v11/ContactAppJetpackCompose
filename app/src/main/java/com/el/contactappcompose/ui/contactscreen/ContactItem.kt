@@ -34,13 +34,14 @@ fun ContactItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onContactClick(contact) }
-            .padding(16.dp),
+            .padding(8.dp)
+        ,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         AsyncImage(
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier.height(60.dp).width(60.dp).clip(CircleShape) ,
+            modifier = Modifier.height(40.dp).width(40.dp).clip(CircleShape) ,
             error = painterResource(R.drawable.placeholder) ,
             model = contact.profilePictureUrl ?: "",
             contentDescription = "User profile Picture"
@@ -49,7 +50,7 @@ fun ContactItem(
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(text = contact.name, style = MaterialTheme.typography.bodyLarge)
-            Text(text = contact.phoneNumber, style = MaterialTheme.typography.bodySmall)
+//            Text(text = contact.phoneNumber, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
