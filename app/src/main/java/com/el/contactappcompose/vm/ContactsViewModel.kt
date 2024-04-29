@@ -14,14 +14,16 @@ import com.el.contactappcompose.data.local.ContactDatabase
 import com.el.contactappcompose.data.local.ContactEntity
 import com.el.contactappcompose.data.repo.LocalContactRepo
 import com.el.contactappcompose.data.toContact
+import com.el.contactappcompose.data.toContactEntity
 import com.el.contactappcompose.domain.Contact
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,22 +61,25 @@ class ContactsViewModel @Inject constructor(
     val searchResult: StateFlow<List<Contact>> get() = _searchResult
 
     fun searchContact(query: String = "") {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (query.isEmpty()) {
                 _searchResult.value = listOf()
                 return@launch
             }
+
             val searchResultFlow = contactDb.dao.search(query).map { data ->
                 data.map { it.toContact() }
             }
 
             val localContactListFlow =
-                flowOf(localContactList.filter { it.name.contains(query, ignoreCase = true) })
+                flowOf(
+                    localContactList.filter { it.name.contains(query, ignoreCase = true) }
+                )
 
             searchResultFlow.combine(localContactListFlow) { searchResult, otherList ->
                 (searchResult + otherList).sortedBy { it.firstName }
-            }.onEach {
-                _searchResult.value = it // Update the MutableStateFlow with the sorted list
+            }.collectLatest {
+                _searchResult.value = it
             }
         }
     }
@@ -93,10 +98,18 @@ class ContactsViewModel @Inject constructor(
             lastName = lastName,
             phoneNumber = phoneNumber,
             emailAddress = mailId,
-            profilePictureUrl = null,
-            isRemote = false
+            profilePictureUrl = selectedContact?.profilePictureUrl,
+            isRemote = selectedContact?.isRemote ?: false
         )
         Log.d(TAG, "ContactsViewmodel :: Contact need to save $contact")
+
+        if (contact.isRemote) {
+            viewModelScope.launch(Dispatchers.IO) {
+                contactDb.dao.update(contactEntity = contact.toContactEntity())
+            }
+            selectedContact = contact
+            return contact
+        }
 
         return if (selectedContact?.id == null) {
             localContactsRepo.insertContact(contact = contact)

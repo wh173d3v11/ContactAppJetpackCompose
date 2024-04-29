@@ -1,5 +1,6 @@
 package com.el.contactappcompose.ui.components
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.el.contactappcompose.R
+import com.el.contactappcompose.TAG
 import com.el.contactappcompose.ui.LocalContactsViewModel
 import com.el.contactappcompose.ui.LocalNavController
 import com.el.contactappcompose.ui.Routes
@@ -171,7 +173,7 @@ fun ExpandedSearchView(
         placeholder = {
             Text(text = stringResource(id = R.string.search_placeholder))
         }) {
-
+        Log.i(TAG,"Searchbar :: searchList size = ${searchResult.size}")
         Text(
             modifier = Modifier.padding(8.dp),
             text = when {

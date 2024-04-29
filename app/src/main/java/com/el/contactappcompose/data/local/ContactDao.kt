@@ -2,9 +2,12 @@ package com.el.contactappcompose.data.local
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface ContactDao {
@@ -14,6 +17,9 @@ interface ContactDao {
 
     @Query("SELECT * FROM contactentity")
     fun pagingSource(): PagingSource<Int, ContactEntity>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(contactEntity: ContactEntity)
 
     @Query("DELETE FROM contactentity")
     suspend fun clearAll()

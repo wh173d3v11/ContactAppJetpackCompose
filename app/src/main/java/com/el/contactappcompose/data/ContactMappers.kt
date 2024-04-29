@@ -14,6 +14,16 @@ fun ResultUsers.toContactEntity(): ContactEntity {
         emailAddress = email
     )
 }
+fun Contact.toContactEntity(): ContactEntity {
+    return ContactEntity(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        profilePictureUrl = profilePictureUrl ?: "",
+        phoneNumber = phoneNumber,
+        emailAddress = emailAddress
+    )
+}
 
 fun ContactEntity.toContact(): Contact {
     return Contact(
