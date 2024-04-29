@@ -86,4 +86,7 @@ dependencies {
     implementation(libs.androidx.paging.compose)
 
     implementation(libs.coil.compose)
+
+    implementation(libs.orbital)
+    implementation(libs.androidx.constraintlayout.compose)
 }

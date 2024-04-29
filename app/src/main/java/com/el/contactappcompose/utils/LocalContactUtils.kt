@@ -27,7 +27,13 @@ object LocalContactUtils {
                     c.getStringOrNull(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME) ?: ""
                 val phoneNumber =
                     c.getStringOrNull(ContactsContract.CommonDataKinds.Phone.NUMBER) ?: ""
-                val (firstName, lastName) = fullName.split(" ")
+                val (firstName, lastName) = run {
+                    val nameParts = fullName.split(" ")
+                    when {
+                        nameParts.size >= 2 -> Pair(nameParts[0], nameParts[1])
+                        else -> Pair(fullName, "")
+                    }
+                }
 
                 Log.d(
                     "LocalContactUtils",

@@ -1,6 +1,7 @@
 package com.el.contactappcompose.ui.contactscreen
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,16 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.el.contactappcompose.domain.Contact
+import com.el.contactappcompose.presentation.ContactsViewModel
 
 @Composable
 fun RemoteContactScreen(
-    contacts: LazyPagingItems<Contact>
+    onContactClick: ((Contact) -> Unit)
 ) {
     val context = LocalContext.current
+
+    val viewModel: ContactsViewModel = hiltViewModel<ContactsViewModel>()
+    val contacts = viewModel.contactPagingFlow.collectAsLazyPagingItems()
+
     LaunchedEffect(key1 = contacts.loadState) {
         val refresh = contacts.loadState.refresh
         if (refresh is LoadState.Error) { // checking for initial load and manual refresh error only.
@@ -45,7 +52,12 @@ fun RemoteContactScreen(
 
                 items(count = contacts.itemCount, key = contacts.itemKey { it.id }) { index ->
                     contacts[index]?.let {
-                        ContactItem(contact = it)
+
+                        ContactItem(
+                            modifier = Modifier.clickable { onContactClick.invoke(it) },
+                            contact = it
+                        )
+
                         if (index < (contacts.itemCount - 1))
                             Divider(color = Color.LightGray, thickness = 1.dp)
                     }

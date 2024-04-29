@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +25,7 @@ import com.el.contactappcompose.utils.LocalContactUtils
 
 
 @Composable
-fun LocalContactScreen() {
+fun LocalContactScreen(onContactClick: ((Contact) -> Unit)) {
     var result by remember { mutableStateOf<List<Contact>?>(null) }
     val context = LocalContext.current
 
@@ -61,8 +62,12 @@ fun LocalContactScreen() {
             items(
                 count = contactlist.size,
             ) { contactIndex ->
-
-                ContactItem(contact = contactlist[contactIndex])
+                contactlist[contactIndex].let {
+                    ContactItem(
+                        modifier = Modifier.clickable { onContactClick.invoke(it) },
+                        contact = it
+                    )
+                }
             }
         }
     }

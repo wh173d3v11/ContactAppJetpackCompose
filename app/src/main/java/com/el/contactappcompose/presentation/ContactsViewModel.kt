@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.el.contactappcompose.data.local.ContactEntity
 import com.el.contactappcompose.data.toContact
+import com.el.contactappcompose.domain.Contact
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -22,5 +23,7 @@ class ContactsViewModel @Inject constructor(
             data.map { it.toContact() }
         }
         .cachedIn(viewModelScope)
+
+    var selectedContact: Contact? = null
 
 }

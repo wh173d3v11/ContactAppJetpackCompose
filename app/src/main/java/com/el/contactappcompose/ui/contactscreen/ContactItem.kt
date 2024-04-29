@@ -1,6 +1,5 @@
 package com.el.contactappcompose.ui.contactscreen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,13 +26,11 @@ import com.el.contactappcompose.ui.theme.ContactAppComposeTheme
 @Composable
 fun ContactItem(
     contact: Contact,
-    modifier: Modifier = Modifier,
-    onContactClick: (Contact) -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onContactClick(contact) }
             .padding(8.dp)
         ,
         verticalAlignment = Alignment.CenterVertically
