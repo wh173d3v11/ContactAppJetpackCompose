@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -109,7 +109,7 @@ fun CreateOrEditContactScreen(onBackClicked: () -> Unit) {
                     .clickable { onBackClicked() },
                 imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                 contentDescription = null,
-                tint = Color.DarkGray
+                tint = MaterialTheme.colorScheme.surfaceTint
             )
             Text(
                 modifier = Modifier
@@ -274,7 +274,7 @@ fun ContactTextField(
             Text(text = label)
         },
         placeholder = {
-            Text(text = placeHolder, color = Color.Gray)
+            Text(text = placeHolder, color = MaterialTheme.colorScheme.surfaceTint)
         },
         leadingIcon = {
             Icon(

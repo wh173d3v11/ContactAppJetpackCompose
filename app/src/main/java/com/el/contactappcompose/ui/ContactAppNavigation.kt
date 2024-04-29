@@ -1,5 +1,6 @@
 package com.el.contactappcompose.ui
 
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -20,6 +21,10 @@ fun ContactAppNavigation() {
         LocalContactsViewModel provides hiltViewModel()
     ) {
         SetupNavGraph()
+//        Surface {
+//            CreateOrEditContactScreen(
+//                onBackClicked = { })
+//        }
     }
 }
 
@@ -37,17 +42,21 @@ fun SetupNavGraph() {
         }
 
         composable(Routes.DETAIL_SCREEN.routeName) {
-            DetailsScreen(
-                onBackClicked = { navController.popBackStack() },
-                onEditClicked = {
+            Surface {
+                DetailsScreen(
+                    onBackClicked = { navController.popBackStack() },
+                    onEditClicked = {
 
-                    navController.navigate(Routes.CREATE_OR_EDIT_SCREEN.routeName)
-                })
+                        navController.navigate(Routes.CREATE_OR_EDIT_SCREEN.routeName)
+                    })
+            }
         }
 
         composable(Routes.CREATE_OR_EDIT_SCREEN.routeName) {
-            CreateOrEditContactScreen(
-                onBackClicked = { navController.popBackStack() })
+            Surface {
+                CreateOrEditContactScreen(
+                    onBackClicked = { navController.popBackStack() })
+            }
         }
     }
 }

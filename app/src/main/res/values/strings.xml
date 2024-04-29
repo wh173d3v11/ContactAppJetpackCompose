@@ -30,4 +30,6 @@
     <string name="err_something_went_wrong">Something went wrong..😑</string>
     <string name="err_contact_read_permission_denied">Contact Read permission Denied...</string>
     <string name="err_contact_write_permission_denied">Contact Write permission Denied...</string>
+    <string name="text_contact_not_found">Contact data not found🫤</string>
+    <string name="text_no_contacts_found_create_new_one">Whoa! No contacts in the list ? Go ahead and create new 🚀!</string>
 </resources>

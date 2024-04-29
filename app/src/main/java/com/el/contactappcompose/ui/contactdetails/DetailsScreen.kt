@@ -32,10 +32,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,7 +61,8 @@ fun DetailsScreen(
                 onBackClicked = onBackClicked,
                 onEditClicked = { onEditClicked.invoke(it) })
         } ?: Text(
-            modifier = Modifier.align(Alignment.Center), text = "Contact data not found"
+            modifier = Modifier.align(Alignment.Center),
+            text = stringResource(id = R.string.text_contact_not_found)
         )
     }
 }
@@ -78,7 +79,7 @@ fun ContactDetailsScreen(
             Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.2f)
-                .background(color = MaterialTheme.colorScheme.inversePrimary)
+                .background(color = MaterialTheme.colorScheme.background)
         ) {
 
             val (profBg, profImage, editIcon, ivBack) = createRefs()
@@ -88,7 +89,7 @@ fun ContactDetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .blur(10.dp)
-                    .alpha(0.5f)
+                    .alpha(0.6f)
                     .constrainAs(profBg) {
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
@@ -128,7 +129,7 @@ fun ContactDetailsScreen(
                 .clickable { onBackClicked() },
                 imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                 contentDescription = null,
-                tint = Color.DarkGray
+                tint = MaterialTheme.colorScheme.surfaceTint
             )
 
             Icon(modifier = Modifier
@@ -140,7 +141,7 @@ fun ContactDetailsScreen(
                 .clickable { onEditClicked() },
                 imageVector = Icons.TwoTone.Edit,
                 contentDescription = null,
-                tint = Color.DarkGray
+                tint = MaterialTheme.colorScheme.surfaceTint
             )
         }
 
