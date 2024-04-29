@@ -85,7 +85,7 @@ class ContactsViewModel @Inject constructor(
     }
 
     //create edit contact.
-    fun saveContact() {
+    fun saveContact(context: Context) {
         val contact = Contact(
             id = (selectedContact?.id) ?: (phoneNumber.hashCode() + Random.nextInt()),
             firstName = firstName,
@@ -96,6 +96,10 @@ class ContactsViewModel @Inject constructor(
             isRemote = false
         )
         Log.d("contact", "Contact need to save $contact")
+//        return LocalContactUtils.getNewContactIntent(contact = contact)
+
+        LocalContactUtils.updateContact(context = context, contact = contact)
+
     }
 
     var firstName = ""

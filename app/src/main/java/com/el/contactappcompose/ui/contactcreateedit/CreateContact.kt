@@ -1,6 +1,11 @@
 package com.el.contactappcompose.ui.contactcreateedit
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +45,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.el.contactappcompose.R
 import com.el.contactappcompose.ui.LocalContactsViewModel
 
@@ -64,9 +71,11 @@ fun CreateOrEditContactScreen(onBackClicked: () -> Unit) {
         if (err.isNotEmpty()) Toast.makeText(context, err, Toast.LENGTH_SHORT).show()
         else {
             fm.clearFocus()
-            vm.saveContact()
+            vm.saveContact(context = context)
         }
     }
+
+    RequestWritePermissionIfNeeded()
 
     Column(
         modifier = Modifier
@@ -159,6 +168,34 @@ fun CreateOrEditContactScreen(onBackClicked: () -> Unit) {
             Text(text = stringResource(id = R.string.txt_save))
         }
 
+    }
+}
+
+@Composable
+fun RequestWritePermissionIfNeeded() {
+    val context = LocalContext.current
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Log.d("dinesh", "Write permission granted.")
+            } else {
+                Toast.makeText(context, "Contact Write permission Denied...", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+    //checking and request permission
+    val permission = Manifest.permission.WRITE_CONTACTS
+    if (ContextCompat.checkSelfPermission(
+            context,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
+        Log.d("dinesh", "Write permission granted.")
+    } else {
+        SideEffect {
+            requestPermissionLauncher.launch(permission)
+        }
     }
 }
 
