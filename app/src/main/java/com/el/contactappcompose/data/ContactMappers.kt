@@ -6,7 +6,7 @@ import com.el.contactappcompose.domain.Contact
 
 fun ResultUsers.toContactEntity(): ContactEntity {
     return ContactEntity(
-        id = id.hashCode(),
+        id = id.hashCode().toLong(),
         firstName = name.first,
         lastName = name.last,
         profilePictureUrl = picture.medium,

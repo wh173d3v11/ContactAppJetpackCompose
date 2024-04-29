@@ -26,4 +26,6 @@
     <string name="err_phone_required">Mobile number required..</string>
     <string name="err_enter_valid_email">Please enter valid EMail Id..</string>
     <string name="err_enter_valid_mobile">Please enter valid Mobile number..</string>
+    <string name="txt_contact_saved">Contact Saved..🥳</string>
+    <string name="err_something_went_wrong">Something went wrong..😑</string>
 </resources>

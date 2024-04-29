@@ -1,7 +1,7 @@
 package com.el.contactappcompose.domain
 
 data class Contact(
-    val id: Int,
+    val id: Long,
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,

@@ -21,18 +21,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.el.contactappcompose.domain.Contact
-import com.el.contactappcompose.utils.LocalContactUtils
+import com.el.contactappcompose.ui.LocalContactsViewModel
 
 
 @Composable
 fun LocalContactScreen(onContactClick: ((Contact) -> Unit)) {
     var result by remember { mutableStateOf<List<Contact>?>(null) }
     val context = LocalContext.current
+    val vm = LocalContactsViewModel.current
 
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                result = LocalContactUtils.queryContacts(context)
+                result = vm.localContactList
             } else {
                 Toast.makeText(context, "Contact Read permission Denied...", Toast.LENGTH_SHORT)
                     .show()
@@ -46,7 +47,7 @@ fun LocalContactScreen(onContactClick: ((Contact) -> Unit)) {
             permission
         ) == PackageManager.PERMISSION_GRANTED
     ) {
-        result = LocalContactUtils.queryContacts(context)
+        result = vm.localContactList
     } else {
         SideEffect {
             requestPermissionLauncher.launch(permission)

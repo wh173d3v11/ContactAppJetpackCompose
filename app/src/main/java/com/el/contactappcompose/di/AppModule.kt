@@ -9,6 +9,7 @@ import com.el.contactappcompose.data.local.ContactDatabase
 import com.el.contactappcompose.data.local.ContactEntity
 import com.el.contactappcompose.data.remote.ContactRemoteMediator
 import com.el.contactappcompose.data.remote.ContactsApi
+import com.el.contactappcompose.utils.LocalContactUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +31,12 @@ object AppModule {
     @Singleton
     fun provideContactsDatabase(@ApplicationContext context: Context): ContactDatabase {
         return Room.databaseBuilder(context, ContactDatabase::class.java, "contacts.db").build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocalContactsRepo(@ApplicationContext context: Context): LocalContactUtils {
+        return LocalContactUtils(context)
     }
 
     // https://randomuser.me/api/?page=2&results=25&inc=gender,name,picture,phone,cell,id,email

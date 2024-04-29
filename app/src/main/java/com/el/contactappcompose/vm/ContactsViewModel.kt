@@ -1,4 +1,4 @@
-package com.el.contactappcompose.presentation
+package com.el.contactappcompose.vm
 
 import android.content.Context
 import android.util.Log
@@ -23,12 +23,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
     pager: Pager<Int, ContactEntity>,
     val contactDb: ContactDatabase,
+    val localContactsRepo: LocalContactUtils
 ) : ViewModel() {
 
     //remote data
@@ -41,7 +41,7 @@ class ContactsViewModel @Inject constructor(
 
     //local data
     val localContactList: List<Contact>
-        get() = LocalContactUtils.savedLocalContacts
+        get() = localContactsRepo.savedLocalContacts
 
     //for detail screen, edit/create
     var selectedContact: Contact? = null
@@ -85,9 +85,9 @@ class ContactsViewModel @Inject constructor(
     }
 
     //create edit contact.
-    fun saveContact(context: Context) {
+    fun saveContact(): Contact? {
         val contact = Contact(
-            id = (selectedContact?.id) ?: (phoneNumber.hashCode() + Random.nextInt()),
+            id = (selectedContact?.id) ?: -1,
             firstName = firstName,
             lastName = lastName,
             phoneNumber = phoneNumber,
@@ -96,9 +96,14 @@ class ContactsViewModel @Inject constructor(
             isRemote = false
         )
         Log.d("contact", "Contact need to save $contact")
-//        return LocalContactUtils.getNewContactIntent(contact = contact)
 
-        LocalContactUtils.updateContact(context = context, contact = contact)
+        return if (selectedContact?.id == null) {
+            localContactsRepo.insertContact(contact = contact)
+        } else {
+            localContactsRepo.updateContact(contact = contact).also {
+                selectedContact = it
+            }
+        }
 
     }
 

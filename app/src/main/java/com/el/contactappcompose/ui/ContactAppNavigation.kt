@@ -8,10 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.el.contactappcompose.presentation.ContactsViewModel
 import com.el.contactappcompose.ui.contactcreateedit.CreateOrEditContactScreen
 import com.el.contactappcompose.ui.contactdetails.DetailsScreen
 import com.el.contactappcompose.ui.contactscreen.HomeScreen
+import com.el.contactappcompose.vm.ContactsViewModel
 
 @Composable
 fun ContactAppNavigation() {

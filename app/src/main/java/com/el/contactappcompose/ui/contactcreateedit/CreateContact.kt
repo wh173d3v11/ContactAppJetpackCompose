@@ -71,7 +71,21 @@ fun CreateOrEditContactScreen(onBackClicked: () -> Unit) {
         if (err.isNotEmpty()) Toast.makeText(context, err, Toast.LENGTH_SHORT).show()
         else {
             fm.clearFocus()
-            vm.saveContact(context = context)
+            val c = vm.saveContact()
+            if (c == null) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.err_something_went_wrong),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.txt_contact_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+                onBackClicked.invoke()
+            }
         }
     }
 

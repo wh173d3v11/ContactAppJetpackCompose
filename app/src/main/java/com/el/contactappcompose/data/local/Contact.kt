@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class ContactEntity(
     @PrimaryKey
-    val id:Int,
-    val firstName:String,
-    val lastName:String,
-    val phoneNumber:String,
+    val id: Long,
+    val firstName: String,
+    val lastName: String,
+    val phoneNumber: String,
     val emailAddress: String,
     val profilePictureUrl: String
 )
