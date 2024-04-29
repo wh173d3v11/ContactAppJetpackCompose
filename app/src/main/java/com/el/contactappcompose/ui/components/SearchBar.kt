@@ -30,12 +30,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.el.contactappcompose.R
 import com.el.contactappcompose.ui.LocalContactsViewModel
+import com.el.contactappcompose.ui.LocalNavController
+import com.el.contactappcompose.ui.Routes
 import com.el.contactappcompose.ui.contactscreen.ContactItem
 import com.el.contactappcompose.ui.theme.ContactAppComposeTheme
 
@@ -102,12 +105,17 @@ fun ExpandedSearchView(
     tint: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
     var text by remember { mutableStateOf("") }
+    var isSearchClicked by remember { mutableStateOf(false) }
 
+    val nc = LocalNavController.current
     val vm = LocalContactsViewModel.current
+    val fm = LocalFocusManager.current
+
     val searchResult by vm.searchResult.collectAsState(initial = listOf())
     val searchFocusRequester = remember { FocusRequester() }
 
     SideEffect {
+        vm.searchContact("")
         searchFocusRequester.requestFocus()
     }
 
@@ -117,6 +125,7 @@ fun ExpandedSearchView(
             .focusRequester(searchFocusRequester),
         query = text,
         onQueryChange = {
+            isSearchClicked = false
             text = it
         },
         leadingIcon = {
@@ -136,38 +145,55 @@ fun ExpandedSearchView(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
+                        isSearchClicked = false
                         text = ""
                     },
                 imageVector = Icons.TwoTone.Clear,
-                contentDescription = "back icon",
+                contentDescription = "clear icon",
                 tint = tint
             )
         },
         onSearch = {
+            isSearchClicked = true
             vm.searchContact(it)
+            fm.clearFocus()
         },
         active = true,
         onActiveChange = {
             if (!it) onExpandedChanged(false)
         },
         placeholder = {
-            Text(text = ("Search..."))
+            Text(text = stringResource(id = R.string.search_placeholder))
         }) {
 
-        when {
-            searchResult.isEmpty() and text.isEmpty() -> {
+        Text(
+            modifier = Modifier.padding(8.dp),
+            text = when {
+                searchResult.isEmpty() and !isSearchClicked  -> {
+                    stringResource(id = R.string.search_result_hint)
+                }
 
+                searchResult.isEmpty() -> {
+                    stringResource(id = R.string.search_result_not_found)
+                }
+
+                else -> {
+                    stringResource(id = R.string.search_result_found)
+                }
             }
+        )
 
-            searchResult.isEmpty() -> {
-
-            }
-
-            else -> {
-                LazyColumn {
-                    items(searchResult) {
-                        ContactItem(contact = it, showLabel = true)
-                    }
+        if (searchResult.isNotEmpty()) {
+            LazyColumn {
+                items(searchResult) {
+                    ContactItem(
+                        modifier = Modifier.clickable {
+                            vm.selectedContact = it
+                            nc.navigate(Routes.DETAIL_SCREEN.routeName)
+                        },
+                        contact = it,
+                        showLabel = true
+                    )
                 }
             }
         }
