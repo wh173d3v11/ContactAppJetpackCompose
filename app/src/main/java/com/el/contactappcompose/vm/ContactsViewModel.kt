@@ -9,11 +9,12 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.el.contactappcompose.R
+import com.el.contactappcompose.TAG
 import com.el.contactappcompose.data.local.ContactDatabase
 import com.el.contactappcompose.data.local.ContactEntity
+import com.el.contactappcompose.data.repo.LocalContactRepo
 import com.el.contactappcompose.data.toContact
 import com.el.contactappcompose.domain.Contact
-import com.el.contactappcompose.utils.LocalContactUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class ContactsViewModel @Inject constructor(
     pager: Pager<Int, ContactEntity>,
     val contactDb: ContactDatabase,
-    val localContactsRepo: LocalContactUtils
+    val localContactsRepo: LocalContactRepo
 ) : ViewModel() {
 
     //remote data
@@ -95,7 +96,7 @@ class ContactsViewModel @Inject constructor(
             profilePictureUrl = null,
             isRemote = false
         )
-        Log.d("contact", "Contact need to save $contact")
+        Log.d(TAG, "ContactsViewmodel :: Contact need to save $contact")
 
         return if (selectedContact?.id == null) {
             localContactsRepo.insertContact(contact = contact)

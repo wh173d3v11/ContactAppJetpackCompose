@@ -6,6 +6,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.el.contactappcompose.TAG
 import com.el.contactappcompose.data.local.ContactDatabase
 import com.el.contactappcompose.data.local.ContactEntity
 import com.el.contactappcompose.data.toContactEntity
@@ -28,7 +29,7 @@ class ContactRemoteMediator(
         state: PagingState<Int, ContactEntity>
     ): MediatorResult {
         return try {
-            Log.d("dinesh", "loadType : ${loadType.name}")
+            Log.d(TAG, "ContactRemoteMediator :: loadType : ${loadType.name}")
             //finding next page
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1

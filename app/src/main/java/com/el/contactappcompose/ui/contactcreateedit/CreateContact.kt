@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.el.contactappcompose.R
+import com.el.contactappcompose.TAG
 import com.el.contactappcompose.ui.LocalContactsViewModel
 
 
@@ -191,10 +192,13 @@ fun RequestWritePermissionIfNeeded() {
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                Log.d("dinesh", "Write permission granted.")
+                Log.d(TAG, "CreateContact :: Write permission granted.")
             } else {
-                Toast.makeText(context, "Contact Write permission Denied...", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.err_contact_write_permission_denied),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -205,7 +209,7 @@ fun RequestWritePermissionIfNeeded() {
             permission
         ) == PackageManager.PERMISSION_GRANTED
     ) {
-        Log.d("dinesh", "Write permission granted.")
+        Log.d(TAG, "CreateContact :: Write permission granted.")
     } else {
         SideEffect {
             requestPermissionLauncher.launch(permission)

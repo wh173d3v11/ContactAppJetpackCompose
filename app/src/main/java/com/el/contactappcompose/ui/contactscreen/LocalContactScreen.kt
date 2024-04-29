@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.el.contactappcompose.R
 import com.el.contactappcompose.domain.Contact
 import com.el.contactappcompose.ui.LocalContactsViewModel
 
@@ -35,8 +36,11 @@ fun LocalContactScreen(onContactClick: ((Contact) -> Unit)) {
             if (isGranted) {
                 result = vm.localContactList
             } else {
-                Toast.makeText(context, "Contact Read permission Denied...", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.err_contact_read_permission_denied),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

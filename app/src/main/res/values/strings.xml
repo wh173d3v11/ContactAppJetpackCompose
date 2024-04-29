@@ -28,4 +28,6 @@
     <string name="err_enter_valid_mobile">Please enter valid Mobile number..</string>
     <string name="txt_contact_saved">Contact Saved..🥳</string>
     <string name="err_something_went_wrong">Something went wrong..😑</string>
+    <string name="err_contact_read_permission_denied">Contact Read permission Denied...</string>
+    <string name="err_contact_write_permission_denied">Contact Write permission Denied...</string>
 </resources>

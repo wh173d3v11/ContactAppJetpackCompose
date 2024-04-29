@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.el.contactappcompose.TAG
 import com.el.contactappcompose.domain.Contact
 import com.el.contactappcompose.ui.LocalContactsViewModel
 import com.el.contactappcompose.ui.LocalNavController
@@ -53,7 +54,7 @@ fun HomeScreen() {
             modifier = Modifier.padding(top = contentPadding.calculateTopPadding()),
             onContactClick = {
                 vm.selectedContact = it
-                Log.d("contact", "Contact Saved vm.selectedContact ${vm.selectedContact}")
+                Log.d(TAG, "ContactScreen :: Contact Saved vm.selectedContact ${vm.selectedContact}")
                 navController.navigate(Routes.DETAIL_SCREEN.routeName)
             })
     }

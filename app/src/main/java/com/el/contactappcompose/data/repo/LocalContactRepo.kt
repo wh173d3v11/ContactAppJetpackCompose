@@ -1,4 +1,4 @@
-package com.el.contactappcompose.utils
+package com.el.contactappcompose.data.repo
 
 import android.content.ContentResolver
 import android.content.ContentUris
@@ -8,9 +8,10 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
+import com.el.contactappcompose.TAG
 import com.el.contactappcompose.domain.Contact
 
-class LocalContactUtils(private val context: Context) {
+class LocalContactRepo(private val context: Context) {
 
     var savedLocalContacts = mutableListOf<Contact>()
         private set
@@ -24,6 +25,8 @@ class LocalContactUtils(private val context: Context) {
     fun insertContact(
         contact: Contact
     ): Contact? {
+        Log.d(TAG, "LocalContactRepo :: insertContact()")
+
         val contentValues = ContentValues().apply {
             put(ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY, contact.firstName)
         }
@@ -33,6 +36,7 @@ class LocalContactUtils(private val context: Context) {
 
         rawContactUri?.let { rawContactUri ->
             val id = ContentUris.parseId(rawContactUri)
+            Log.d(TAG, "LocalContactRepo :: insertContact() id = $id")
             val nameValues = ContentValues().apply {
                 put(ContactsContract.Data.RAW_CONTACT_ID, id)
                 put(
@@ -97,6 +101,7 @@ class LocalContactUtils(private val context: Context) {
     fun updateContact(
         contact: Contact
     ): Contact {
+        Log.d(TAG, "LocalContactRepo :: updateContact()")
         val contentValues = ContentValues().apply {
             put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.firstName)
             put(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, contact.lastName)
@@ -126,6 +131,7 @@ class LocalContactUtils(private val context: Context) {
 
 
         if (contact.emailAddress.isNotEmpty()) {
+            Log.d(TAG, "LocalContactRepo :: updateContact() updating email..")
             val emailValues = ContentValues().apply {
                 put(ContactsContract.CommonDataKinds.Email.ADDRESS, contact.emailAddress)
             }
@@ -139,6 +145,7 @@ class LocalContactUtils(private val context: Context) {
                 )
             )
             if (result == 0) {
+                Log.d(TAG, "LocalContactRepo :: updateContact() updating email result 0, trying to insert new..")
                 //email not updated, possibly it does not even have email in record.
                 //so creating one.
                 insertEmailInContact(
@@ -147,7 +154,7 @@ class LocalContactUtils(private val context: Context) {
                     emailAddress = contact.emailAddress
                 )
             }
-            Log.d("dinesh", "Email insert done -- $result")
+            Log.d(TAG, "Email insert done -- $result")
         }
 
         val origC = savedLocalContacts.indexOfFirst { contact.id == it.id }
@@ -188,8 +195,8 @@ class LocalContactUtils(private val context: Context) {
                 }
 
                 Log.d(
-                    "LocalContactUtils",
-                    "id = $id,\n" +
+                    TAG,
+                    "LocalContactRepo :: id = $id,\n" +
                             "firstName = $firstName,\n" +
                             "lastName = $lastName,\n" +
                             "phoneNumber = $phoneNumber"
