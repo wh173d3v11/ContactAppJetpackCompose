@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,21 +26,23 @@ import com.el.contactappcompose.ui.theme.ContactAppComposeTheme
 
 @Composable
 fun ContactItem(
-    contact: Contact,
+    contact: Contact, showLabel: Boolean = false,//this will show form remote or local.
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
-        ,
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         AsyncImage(
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier.height(40.dp).width(40.dp).clip(CircleShape) ,
-            error = painterResource(R.drawable.placeholder) ,
+            modifier = Modifier
+                .height(40.dp)
+                .width(40.dp)
+                .clip(CircleShape),
+            error = painterResource(R.drawable.placeholder),
             model = contact.profilePictureUrl ?: "",
             contentDescription = "User profile Picture"
         )
@@ -47,7 +50,11 @@ fun ContactItem(
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(text = contact.name, style = MaterialTheme.typography.bodyLarge)
-//            Text(text = contact.phoneNumber, style = MaterialTheme.typography.bodySmall)
+            if (showLabel) Text(
+                text = contact.labelName,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
         }
     }
 }
@@ -64,7 +71,7 @@ fun ContactItemPreview() {
                 phoneNumber = "9876543210",
                 emailAddress = "wow@umbrellaacademy.com",
                 profilePictureUrl = null
-            )
+            ), showLabel = true
         )
     }
 }

@@ -18,6 +18,10 @@ interface ContactDao {
     @Query("DELETE FROM contactentity")
     suspend fun clearAll()
 
-    @Query("SELECT * FROM contactentity WHERE firstName LIKE :query OR lastName LIKE :query")
+    @Query(
+        "SELECT * FROM contactentity WHERE " +
+                "firstName LIKE  '%' || :query ||  '%' OR " +
+                "lastName LIKE '%' || :query || '%'"
+    )
     fun search(query: String): Flow<List<ContactEntity>>
 }

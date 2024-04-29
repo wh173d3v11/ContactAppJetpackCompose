@@ -8,6 +8,9 @@ import com.el.contactappcompose.domain.Contact
 
 object LocalContactUtils {
 
+    var savedLocalContacts = listOf<Contact>()
+        private set
+
     fun queryContacts(context: Context): List<Contact> {
         val contactsList = mutableListOf<Contact>()
         val cursor = context.contentResolver.query(
@@ -50,12 +53,13 @@ object LocalContactUtils {
                         lastName = lastName,
                         profilePictureUrl = "",
                         emailAddress = "",
-                        phoneNumber = phoneNumber
+                        phoneNumber = phoneNumber,
+                        isRemote = false
                     )
                 )
             }
         }
-
+        savedLocalContacts = contactsList
         return contactsList
     }
 

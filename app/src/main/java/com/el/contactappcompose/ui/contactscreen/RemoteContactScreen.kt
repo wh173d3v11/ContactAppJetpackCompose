@@ -33,7 +33,7 @@ fun RemoteContactScreen(
 
     LaunchedEffect(key1 = contacts.loadState) {
         val refresh = contacts.loadState.refresh
-        if (refresh is LoadState.Error) { // checking for initial load and manual refresh error only.
+        if (refresh is LoadState.Error) { // checking for initial load.
             Toast.makeText(context, "Error " + refresh.error.message, Toast.LENGTH_SHORT).show()
         }
 

@@ -32,7 +32,7 @@ fun LocalContactScreen(onContactClick: ((Contact) -> Unit)) {
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                result = (LocalContactUtils.queryContacts(context))
+                result = LocalContactUtils.queryContacts(context)
             } else {
                 Toast.makeText(context, "Contact Read permission Denied...", Toast.LENGTH_SHORT)
                     .show()
