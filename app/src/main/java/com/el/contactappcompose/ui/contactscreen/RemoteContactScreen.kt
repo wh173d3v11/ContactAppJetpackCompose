@@ -15,12 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.el.contactappcompose.domain.Contact
-import com.el.contactappcompose.presentation.ContactsViewModel
+import com.el.contactappcompose.ui.LocalContactsViewModel
 
 @Composable
 fun RemoteContactScreen(
@@ -28,7 +27,8 @@ fun RemoteContactScreen(
 ) {
     val context = LocalContext.current
 
-    val viewModel: ContactsViewModel = hiltViewModel<ContactsViewModel>()
+    val viewModel = LocalContactsViewModel.current
+
     val contacts = viewModel.contactPagingFlow.collectAsLazyPagingItems()
 
     LaunchedEffect(key1 = contacts.loadState) {

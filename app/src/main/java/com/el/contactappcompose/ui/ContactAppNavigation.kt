@@ -14,7 +14,10 @@ import com.el.contactappcompose.ui.contactscreen.HomeScreen
 
 @Composable
 fun ContactAppNavigation() {
-    CompositionLocalProvider(LocalNavController provides rememberNavController()) {
+    CompositionLocalProvider(
+        LocalNavController provides rememberNavController(),
+        LocalContactsViewModel provides hiltViewModel()
+    ) {
         SetupNavGraph()
     }
 }
@@ -23,19 +26,19 @@ fun ContactAppNavigation() {
 fun SetupNavGraph() {
     val navController = LocalNavController.current
 
-    val vm = hiltViewModel<ContactsViewModel>()
-
     NavHost(
         navController = navController,
-        startDestination = Routes.HOME.name,
+        startDestination = Routes.HOME.routeName,
     ) {
 
-        composable(Routes.HOME.name) {
-            HomeScreen(vm)
+        composable(Routes.HOME.routeName) {
+            HomeScreen()
         }
 
-        composable(Routes.DETAIL_SCREEN.name) {
-            DetailsScreen(vm, onBackClicked = { navController.popBackStack() })
+        composable(Routes.DETAIL_SCREEN.routeName) {
+            DetailsScreen(
+                onBackClicked = { navController.popBackStack() },
+                onEditClicked = { })
         }
     }
 }
@@ -44,7 +47,10 @@ val LocalNavController = compositionLocalOf<NavHostController> {
     error("No LocalNavController provided")
 }
 
-enum class Routes(routeName: String) {
-    HOME("home"),
-    DETAIL_SCREEN("detailScreen")
+val LocalContactsViewModel = compositionLocalOf<ContactsViewModel> {
+    error("No LocalContactsViewModel provided")
+}
+
+enum class Routes(val routeName: String) {
+    HOME("home"), DETAIL_SCREEN("detailScreen")
 }

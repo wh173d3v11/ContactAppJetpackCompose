@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.el.contactappcompose.data.local.ContactDatabase
 import com.el.contactappcompose.data.local.ContactEntity
 import com.el.contactappcompose.data.toContact
 import com.el.contactappcompose.domain.Contact
@@ -14,9 +15,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
-    pager: Pager<Int, ContactEntity>
+    pager: Pager<Int, ContactEntity>,
+    val contactDb: ContactDatabase,
 ) : ViewModel() {
 
+    //remote data
     val contactPagingFlow = pager
         .flow
         .map { data ->
@@ -24,6 +27,9 @@ class ContactsViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
+    //local data
+
     var selectedContact: Contact? = null
+
 
 }

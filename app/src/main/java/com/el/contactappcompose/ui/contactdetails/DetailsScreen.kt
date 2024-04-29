@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Call
+import androidx.compose.material.icons.twotone.Edit
 import androidx.compose.material.icons.twotone.Email
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Send
@@ -43,21 +44,35 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.el.contactappcompose.R
 import com.el.contactappcompose.domain.Contact
-import com.el.contactappcompose.presentation.ContactsViewModel
+import com.el.contactappcompose.ui.LocalContactsViewModel
 import com.el.contactappcompose.ui.theme.ContactAppComposeTheme
 
 @Composable
-fun DetailsScreen(vm: ContactsViewModel, onBackClicked: () -> Unit) {
-
+fun DetailsScreen(
+    onBackClicked: () -> Unit,
+    onEditClicked: (Contact) -> Unit
+) {
+    val vm = LocalContactsViewModel.current
     Box(modifier = Modifier.fillMaxSize()) {
         vm.selectedContact?.let {
-            ContactDetailsScreen(it, onBackClicked = onBackClicked)
-        } ?: Text(modifier = Modifier.align(Alignment.Center), text = "Contact data not found")
+            ContactDetailsScreen(
+                it,
+                onBackClicked = onBackClicked,
+                onEditClicked = { onEditClicked.invoke(it) }
+            )
+        } ?: Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = "Contact data not found"
+        )
     }
 }
 
 @Composable
-fun ContactDetailsScreen(contact: Contact, onBackClicked: () -> Unit = {}) {
+fun ContactDetailsScreen(
+    contact: Contact,
+    onBackClicked: () -> Unit = {},
+    onEditClicked: () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -71,7 +86,7 @@ fun ContactDetailsScreen(contact: Contact, onBackClicked: () -> Unit = {}) {
                 .background(color = Color.LightGray)
         ) {
 
-            val (profImage, profileTitle, ivBack) = createRefs()
+            val (profImage, editIcon, ivBack) = createRefs()
 
             AsyncImage(
                 contentScale = ContentScale.FillBounds,
@@ -92,20 +107,6 @@ fun ContactDetailsScreen(contact: Contact, onBackClicked: () -> Unit = {}) {
                 contentDescription = "User profile Picture"
             )
 
-
-            Text(text = "Detail",
-                style = TextStyle(
-                    fontSize = 30.sp,
-                    color = Color.DarkGray,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier
-                    .constrainAs(profileTitle) {
-                        top.linkTo(parent.top, margin = 24.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            )
             Icon(
                 modifier = Modifier
                     .size(28.dp)
@@ -115,6 +116,19 @@ fun ContactDetailsScreen(contact: Contact, onBackClicked: () -> Unit = {}) {
                     }
                     .clickable { onBackClicked() },
                 imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
+                contentDescription = null,
+                tint = Color.DarkGray
+            )
+
+            Icon(
+                modifier = Modifier
+                    .size(28.dp)
+                    .constrainAs(editIcon) {
+                        top.linkTo(parent.top, margin = 24.dp)
+                        end.linkTo(parent.end, margin = 24.dp)
+                    }
+                    .clickable { onEditClicked() },
+                imageVector = Icons.TwoTone.Edit,
                 contentDescription = null,
                 tint = Color.DarkGray
             )

@@ -5,42 +5,42 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.el.contactappcompose.domain.Contact
-import com.el.contactappcompose.presentation.ContactsViewModel
+import com.el.contactappcompose.ui.LocalContactsViewModel
 import com.el.contactappcompose.ui.LocalNavController
 import com.el.contactappcompose.ui.Routes
+import com.el.contactappcompose.ui.components.ExpandableSearchView
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(vm: ContactsViewModel) {
+fun HomeScreen() {
+
     val navController = LocalNavController.current
+    val vm = LocalContactsViewModel.current
+
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(text = "Contacts")
-            })
+            ExpandableSearchView(tint = Color.Black)
         },
-        modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize()
     ) { contentPadding ->
-        ContactScreen(Modifier.padding(top = contentPadding.calculateTopPadding()),
+        ContactScreen(
+            modifier = Modifier.padding(top = contentPadding.calculateTopPadding()),
             onContactClick = {
                 vm.selectedContact = it
                 Log.d("contact", "Contact Saved vm.selectedContact ${vm.selectedContact}")
-                navController.navigate(Routes.DETAIL_SCREEN.name)
+                navController.navigate(Routes.DETAIL_SCREEN.routeName)
             })
     }
 }
