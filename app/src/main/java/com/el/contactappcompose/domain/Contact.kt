@@ -9,7 +9,8 @@ data class Contact(
     val profilePictureUrl: String?,
     var isRemote: Boolean = true,
 ) {
-    val name = "$firstName $lastName"
+    val name
+        get() = "$firstName $lastName"
     val labelName
         get() = if (isRemote) "from Remote" else "from Local"
 }

@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -33,7 +37,17 @@ fun HomeScreen() {
         topBar = {
             ExpandableSearchView(tint = Color.Black)
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    vm.selectedContact = null
+                    navController.navigate(Routes.CREATE_OR_EDIT_SCREEN.routeName)
+                },
+            ) {
+                Icon(Icons.Filled.Add, "Floating action button.")
+            }
+        }
     ) { contentPadding ->
         ContactScreen(
             modifier = Modifier.padding(top = contentPadding.calculateTopPadding()),

@@ -6,4 +6,24 @@
     <string name="search_result_not_found">No result found, try different query!😬</string>
     <string name="search_result_found">Result found 🤩</string>
     <string name="search_placeholder">Search...</string>
+    <string name="max_length_reached">Max Length Reached...</string>
+
+    <!--Create edit screen-->
+    <string name="field_should_not_be_empty">Field should not be empty.</string>
+    <string name="label_firstName">First Name</string>
+    <string name="label_lastName">Last Name</string>
+    <string name="label_email">Email</string>
+    <string name="label_phone">Mobile</string>
+    <string name="placeholder_firstName">Enter first name..</string>
+    <string name="placeholder_lastName">Enter last name..</string>
+    <string name="placeholder_email">Enter email address..</string>
+    <string name="placeholder_phone">Enter Mobile number..</string>
+    <string name="txt_create">Create Contact</string>
+    <string name="txt_edit">Edit Contact</string>
+    <string name="txt_save">Save Contact</string>
+    <string name="err_first_name_required">First name required..</string>
+    <string name="err_last_name_required">Last name required..</string>
+    <string name="err_phone_required">Mobile number required..</string>
+    <string name="err_enter_valid_email">Please enter valid EMail Id..</string>
+    <string name="err_enter_valid_mobile">Please enter valid Mobile number..</string>
 </resources>

@@ -114,8 +114,12 @@ fun ExpandedSearchView(
     val searchResult by vm.searchResult.collectAsState(initial = listOf())
     val searchFocusRequester = remember { FocusRequester() }
 
+    val closeExpandedSearch = {
+        onExpandedChanged(false)
+        vm.clearSearchResultContacts()
+    }
+
     SideEffect {
-        vm.searchContact("")
         searchFocusRequester.requestFocus()
     }
 
@@ -133,7 +137,7 @@ fun ExpandedSearchView(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        onExpandedChanged(false)
+                        closeExpandedSearch.invoke()
                     },
                 painter = painterResource(id = R.drawable.back_arrow_icon),
                 contentDescription = "back icon",
@@ -160,7 +164,9 @@ fun ExpandedSearchView(
         },
         active = true,
         onActiveChange = {
-            if (!it) onExpandedChanged(false)
+            if (!it) {
+                closeExpandedSearch.invoke()
+            }
         },
         placeholder = {
             Text(text = stringResource(id = R.string.search_placeholder))
@@ -169,7 +175,7 @@ fun ExpandedSearchView(
         Text(
             modifier = Modifier.padding(8.dp),
             text = when {
-                searchResult.isEmpty() and !isSearchClicked  -> {
+                searchResult.isEmpty() and !isSearchClicked -> {
                     stringResource(id = R.string.search_result_hint)
                 }
 

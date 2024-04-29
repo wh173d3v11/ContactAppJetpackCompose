@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.el.contactappcompose.presentation.ContactsViewModel
+import com.el.contactappcompose.ui.contactcreateedit.CreateOrEditContactScreen
 import com.el.contactappcompose.ui.contactdetails.DetailsScreen
 import com.el.contactappcompose.ui.contactscreen.HomeScreen
 
@@ -38,7 +39,15 @@ fun SetupNavGraph() {
         composable(Routes.DETAIL_SCREEN.routeName) {
             DetailsScreen(
                 onBackClicked = { navController.popBackStack() },
-                onEditClicked = { })
+                onEditClicked = {
+
+                    navController.navigate(Routes.CREATE_OR_EDIT_SCREEN.routeName)
+                })
+        }
+
+        composable(Routes.CREATE_OR_EDIT_SCREEN.routeName) {
+            CreateOrEditContactScreen(
+                onBackClicked = { navController.popBackStack() })
         }
     }
 }
@@ -52,5 +61,7 @@ val LocalContactsViewModel = compositionLocalOf<ContactsViewModel> {
 }
 
 enum class Routes(val routeName: String) {
-    HOME("home"), DETAIL_SCREEN("detailScreen")
+    HOME("home"),
+    DETAIL_SCREEN("detailScreen"),
+    CREATE_OR_EDIT_SCREEN("createEditScreen")
 }

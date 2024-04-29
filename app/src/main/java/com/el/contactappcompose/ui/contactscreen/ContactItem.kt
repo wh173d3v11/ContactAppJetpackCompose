@@ -26,8 +26,8 @@ import com.el.contactappcompose.ui.theme.ContactAppComposeTheme
 
 @Composable
 fun ContactItem(
-    contact: Contact, showLabel: Boolean = false,//this will show form remote or local.
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contact: Contact, showLabel: Boolean = false//this will show form remote or local.
 ) {
     Row(
         modifier = modifier
