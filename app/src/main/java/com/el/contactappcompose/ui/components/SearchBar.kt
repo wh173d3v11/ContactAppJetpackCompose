@@ -118,8 +118,8 @@ fun ExpandedSearchView(
     val searchFocusRequester = remember { FocusRequester() }
 
     val closeExpandedSearch = {
-        onExpandedChanged(false)
         vm.clearSearchResultContacts()
+        onExpandedChanged(false)
     }
 
     SideEffect {
