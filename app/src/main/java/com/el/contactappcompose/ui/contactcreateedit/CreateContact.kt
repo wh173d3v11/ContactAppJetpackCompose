@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
@@ -28,7 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,6 +97,7 @@ fun CreateOrEditContactScreen(onBackClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -231,12 +234,12 @@ fun ContactTextField(
     onValueChange: (String) -> Unit
 ) {
 
-    var filledText by remember { mutableStateOf(value) }
+    var filledText by rememberSaveable { mutableStateOf(value) }
 
     val errMaxCharReached = stringResource(id = R.string.max_length_reached)
     val errEmptyFieldReached = stringResource(id = R.string.field_should_not_be_empty)
 
-    var errorText by remember { mutableStateOf("") }
+    var errorText by rememberSaveable { mutableStateOf("") }
 
     val setFilledValue: (String) -> Unit = {
         filledText = it

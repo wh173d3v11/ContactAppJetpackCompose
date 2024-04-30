@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +51,7 @@ fun ExpandableSearchView(
     expandedInitially: Boolean = false,
     tint: Color = MaterialTheme.colorScheme.onPrimary
 ) {
-    val (expanded, onExpandedChanged) = remember {
+    val (expanded, onExpandedChanged) = rememberSaveable {
         mutableStateOf(expandedInitially)
     }
 
@@ -106,8 +107,8 @@ fun ExpandedSearchView(
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
-    var text by remember { mutableStateOf("") }
-    var isSearchClicked by remember { mutableStateOf(false) }
+    var text by rememberSaveable { mutableStateOf("") }
+    var isSearchClicked by rememberSaveable { mutableStateOf(false) }
 
     val nc = LocalNavController.current
     val vm = LocalContactsViewModel.current
@@ -173,7 +174,7 @@ fun ExpandedSearchView(
         placeholder = {
             Text(text = stringResource(id = R.string.search_placeholder))
         }) {
-        Log.i(TAG,"Searchbar :: searchList size = ${searchResult.size}")
+        Log.i(TAG, "Searchbar :: searchList size = ${searchResult.size}")
         Text(
             modifier = Modifier.padding(8.dp),
             text = when {
