@@ -21,10 +21,6 @@ fun ContactAppNavigation() {
         LocalContactsViewModel provides hiltViewModel()
     ) {
         SetupNavGraph()
-//        Surface {
-//            CreateOrEditContactScreen(
-//                onBackClicked = { })
-//        }
     }
 }
 
